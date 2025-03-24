@@ -28,46 +28,64 @@ let score = 20;
 let highScore = 0;
 // document.querySelector('.number').textContent = secretNumber;
 
+const displayMessage = function (elementClass, message) {
+  document.querySelector(`.${elementClass}`).textContent = message;
+};
+
 document.querySelector('.check').addEventListener('click', function () {
   const guess = Number(document.querySelector('.guess').value);
 
   //When there is no input
   if (!guess) {
-    document.querySelector('.message').textContent = 'No Number !';
-  } 
+    displayMessage('message', 'No Number !');
+  }
   //When the player wins
   else if (guess === secretNumber) {
-    document.querySelector('.message').textContent = 'Correct Number !';
-    document.querySelector('body').style.backgroundColor = '#60b347';
-    document.querySelector('.number').style.width='30rem';
-    document.querySelector('.number').textContent = secretNumber;
-    score > highScore ? highScore = score : '';
-    document.querySelector('.highscore').textContent = highScore;
+    displayMessage('message', 'Correct Number !');
 
-  } 
-  //When Guess is too high
-  else if (guess > secretNumber) {
+    document.querySelector('body').style.backgroundColor = '#60b347';
+    document.querySelector('.number').style.width = '30rem';
+    displayMessage('number', secretNumber);
+    score > highScore ? (highScore = score) : '';
+    displayMessage('highscore', highScore);
+  }
+  //When Guess is Wrong
+  else if (guess !== secretNumber) {
     if (score > 1) {
-      document.querySelector('.message').textContent = 'Too high !';
+      displayMessage(
+        'message',
+        guess > secretNumber ? 'Too high !' : 'Too Low !'
+      );
       score--;
       document.querySelector('.score').textContent = score;
     } else {
-      document.querySelector('.message').textContent = 'You lost the game !';
+      displayMessage('message', 'You lost the game !');
       document.querySelector('.score').textContent = 0;
-    }
-  } 
-  //When guess is too lows
-  else if (guess < secretNumber) {
-    if (score > 1) {
-      document.querySelector('.message').textContent = 'Too Low !';
-      score--;
-      document.querySelector('.score').textContent = score;
-    } else {
-      document.querySelector('.message').textContent = 'You lost the game !';
-      document.querySelector('.score').textContent = 0;
-      
     }
   }
+  // //When Guess is too high
+  // else if (guess > secretNumber) {
+  //   if (score > 1) {
+  //     document.querySelector('.message').textContent = 'Too high !';
+  //     score--;
+  //     document.querySelector('.score').textContent = score;
+  //   } else {
+  //     document.querySelector('.message').textContent = 'You lost the game !';
+  //     document.querySelector('.score').textContent = 0;
+  //   }
+  // }
+  // //When guess is too lows
+  // else if (guess < secretNumber) {
+  //   if (score > 1) {
+  //     document.querySelector('.message').textContent = 'Too Low !';
+  //     score--;
+  //     document.querySelector('.score').textContent = score;
+  //   } else {
+  //     document.querySelector('.message').textContent = 'You lost the game !';
+  //     document.querySelector('.score').textContent = 0;
+
+  //   }
+  // }
 });
 
 //CHALLENGE
@@ -82,19 +100,18 @@ can make a new guessb! Her is How :
  */
 
 //selecting the button Again
-document.querySelector('.again').addEventListener('click', function(){
+document.querySelector('.again').addEventListener('click', function () {
   //Restore score and secretNumber
   score = 20;
-  secretNumber = Math.trunc(Math.random()*20)+1;
+  secretNumber = Math.trunc(Math.random() * 20) + 1;
 
   //Restore initial condition of the message, number and guess input field
-  document.querySelector('.score').textContent = score;
-  document.querySelector('.message').textContent = "Start guessing...";
-  document.querySelector('.number').textContent = "?";
+  displayMessage('score', score);
+  displayMessage('message', 'Start guessing...');
+  displayMessage('number', '?');
   document.querySelector('.guess').value = '';
 
   //Restore the original Background color to #222 and width to 15rem
   document.querySelector('body').style.backgroundColor = '#222';
-  document.querySelector('.number').style.width = '15rem'
-
+  document.querySelector('.number').style.width = '15rem';
 });
